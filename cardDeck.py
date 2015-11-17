@@ -21,6 +21,8 @@ class Deck:
 
 	def __repr__(self):
 		current = self.top
+		if current is None:
+			return ""
 		returnstr = ""
 		returnstr += str(current.identity) + '->'
 		while current.next is not None:
@@ -49,9 +51,14 @@ def makeDeck(numCards):
 # Given a deck of cards, simulate the process of picking out the 
 # top card and placing that into the table deck. 
 def moveToTop(handdeck, tabledeck):
-
 	if handdeck.top == None:
 		return 
+
+	# if hand deck only has one card remaining, flag it so that we can 
+	# later set its bottom to None
+	bottomFlag = False
+	if handdeck.top.identity == handdeck.bottom.identity:
+		bottomFlag = True
 
 	# top of the hand deck
 	topcard = handdeck.top
@@ -66,6 +73,10 @@ def moveToTop(handdeck, tabledeck):
 	# if topcard is the only card in the table deck, set its bottom
 	if tabledeck.bottom is None:
 		tabledeck.bottom = tabledeck.top
+
+	# if top was also bottom (last card in deck), set the bottom to null
+	if bottomFlag:
+		handdeck.bottom = None
 
 	return (handdeck, tabledeck)
 
@@ -93,9 +104,9 @@ def moveToBottom(handdeck):
 	return handdeck
 
 def isEqual(originalHandDeck, tabledeck):
-	if originalHandDeck is None:
+	if originalHandDeck.top is None:
 		return None
-	if tabledeck is None:
+	if tabledeck.top is None:
 		return False
 
 	tabledeck2 		   = copy.deepcopy(tabledeck)
@@ -118,10 +129,12 @@ def isEqual(originalHandDeck, tabledeck):
 # then placing the next card in hand to the bottom of the hand deck until all
 # the cards in the hand deck is in on the table deck.
 def playRound(handdeck, tabledeck):
-	return None
+	while handdeck.top is not None:
+		moveToTop(handdeck, tabledeck)
+		moveToBottom(handdeck)
 
 if __name__ == '__main__':
-	numCards = 5
+	numCards = 10
 	handdeck = makeDeck(numCards)
 
 	# make a copy of the original deck for comparison later
@@ -135,40 +148,60 @@ if __name__ == '__main__':
 	# make an empty table deck
 	tabledeck = Deck(numCards=numCards)
 
-	# Place the top of handdeck into tabledeck
-	handdeck, tabledeck = moveToTop(handdeck, tabledeck)
+	numRounds = 0
+	while True:
+		playRound(handdeck, tabledeck)
+		print "table deck = ", tabledeck
+		handdeck = copy.deepcopy(tabledeck)
+		tabledeck = Deck(numCards)
+		numRounds += 1
+		if isEqual(originalHandDeck, handdeck):
+			break
+	print "****NUM ROUNDS = ****", numRounds	
+	
+	# print "***AFTER ROUND 1***"
+	# print "hand deck = ", handdeck
+	# print "top of deck = ", handdeck.top
+	# print "bottom of deck = ", handdeck.bottom
+	# print "table deck = ", tabledeck
+	# print "top of deck = ", tabledeck.top
+	# print "bottom of deck = ", tabledeck.bottom
+	
 
-	print "***AFTER TOP MOVE***"
-	print "handdeck = ", handdeck
-	print "top of deck = ", handdeck.top
-	print "bottom of deck = ", handdeck.bottom
+	# # Place the top of handdeck into tabledeck
+	# handdeck, tabledeck = moveToTop(handdeck, tabledeck)
 
-	print "tabledeck = ", tabledeck
-	print "topcard = ", tabledeck.top
-	print "bottom card = ", tabledeck.bottom
+	# print "***AFTER TOP MOVE***"
+	# print "handdeck = ", handdeck
+	# print "top of deck = ", handdeck.top
+	# print "bottom of deck = ", handdeck.bottom
 
-	handdeck = moveToBottom(handdeck)
-	print "***AFTER BOTTOM MOVE***"
-	print "handdeck = ", handdeck
-	print "top of deck = ", handdeck.top
-	print "bottom of deck = ", handdeck.bottom
+	# print "tabledeck = ", tabledeck
+	# print "topcard = ", tabledeck.top
+	# print "bottom card = ", tabledeck.bottom
 
-	fake = originalHandDeck
-	print "****TEST EQUALITY 1 = TRUE****"
-	print isEqual(originalHandDeck, fake)
-	print "****TEST EQUALITY 2 = TRUE****"
-	print isEqual(originalHandDeck, copy.deepcopy(originalHandDeck))
-	print "****TEST EQUALITY 3 = FALSE****"
-	print isEqual(originalHandDeck, None)
-	print "****TEST EQUALITY 4 = FALSE****"
-	fake2 = copy.deepcopy(fake)
-	print isEqual(originalHandDeck, fake2)
-	print "****TEST EQUALITY 5 = FALSE****"
-	fake3 = copy.deepcopy(fake)
-	print isEqual(originalHandDeck, moveToTop(fake3, Deck(numCards))[0])
-	print "****TEST EQUALITY 6 = FALSE****"
-	print isEqual(originalHandDeck, moveToTop(fake3, Deck(numCards))[0])
-	print "fake = ", fake3
+	# handdeck = moveToBottom(handdeck)
+	# print "***AFTER BOTTOM MOVE***"
+	# print "handdeck = ", handdeck
+	# print "top of deck = ", handdeck.top
+	# print "bottom of deck = ", handdeck.bottom
+
+	# fake = originalHandDeck
+	# print "****TEST EQUALITY 1 = TRUE****"
+	# print isEqual(originalHandDeck, fake)
+	# print "****TEST EQUALITY 2 = TRUE****"
+	# print isEqual(originalHandDeck, copy.deepcopy(originalHandDeck))
+	# print "****TEST EQUALITY 3 = FALSE****"
+	# print isEqual(originalHandDeck, None)
+	# print "****TEST EQUALITY 4 = FALSE****"
+	# fake2 = copy.deepcopy(fake)
+	# print isEqual(originalHandDeck, fake2)
+	# print "****TEST EQUALITY 5 = FALSE****"
+	# fake3 = copy.deepcopy(fake)
+	# print isEqual(originalHandDeck, moveToTop(fake3, Deck(numCards))[0])
+	# print "****TEST EQUALITY 6 = FALSE****"
+	# print isEqual(originalHandDeck, moveToTop(fake3, Deck(numCards))[0])
+	# print "fake = ", fake3
 
 
 
