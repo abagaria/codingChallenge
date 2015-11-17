@@ -3,6 +3,7 @@
 #	Date: November 16th, 2015
 #	Coding challenge to manage a deck of cards. 
 ##
+import copy
 
 class Card:
 	def __init__(self, identity, nextcard=None):
@@ -76,8 +77,9 @@ def moveToBottom(handdeck):
 		return
 
 	# tmp vars for top and bottom cards
-	topcard =  handdeck.top
-	bottomcard = handdeck.bottom
+	# deep copy because python defaults to object bindings, not copies
+	topcard =  copy.deepcopy(handdeck.top)
+	bottomcard = copy.deepcopy(handdeck.bottom)
 
 	# update the bottom of the deck
 	handdeck.bottom.next = topcard
@@ -94,6 +96,9 @@ def moveToBottom(handdeck):
 if __name__ == '__main__':
 	numCards = 5
 	handdeck = makeDeck(numCards)
+
+	# make a copy of the original deck for comparison later
+	originalHandDeck = copy.deepcopy(handdeck)
 
 	print "***BEFORE***"
 	print "hand deck = ", handdeck
@@ -120,3 +125,4 @@ if __name__ == '__main__':
 	print "handdeck = ", handdeck
 	print "top of deck = ", handdeck.top
 	print "bottom of deck = ", handdeck.bottom
+
