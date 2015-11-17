@@ -92,6 +92,33 @@ def moveToBottom(handdeck):
 	# return the updated deck
 	return handdeck
 
+def isEqual(originalHandDeck, tabledeck):
+	if originalHandDeck is None:
+		return None
+	if tabledeck is None:
+		return False
+
+	tabledeck2 		   = copy.deepcopy(tabledeck)
+	originalHandDeck2  = copy.deepcopy(originalHandDeck)
+
+	currentTable = tabledeck2.top
+	currentHand  = originalHandDeck2.top
+
+	while currentHand.next is not None and currentTable.next is not None:
+		if currentHand.identity != currentTable.identity:
+			return False
+
+		# update the currents
+		currentHand  = currentHand.next
+		currentTable = currentTable.next
+
+	return True
+
+# A round is defined as taking a card from hand and placing it on the table, 
+# then placing the next card in hand to the bottom of the hand deck until all
+# the cards in the hand deck is in on the table deck.
+def playRound(handdeck, tabledeck):
+	return None
 
 if __name__ == '__main__':
 	numCards = 5
@@ -125,4 +152,31 @@ if __name__ == '__main__':
 	print "handdeck = ", handdeck
 	print "top of deck = ", handdeck.top
 	print "bottom of deck = ", handdeck.bottom
+
+	fake = originalHandDeck
+	print "****TEST EQUALITY 1 = TRUE****"
+	print isEqual(originalHandDeck, fake)
+	print "****TEST EQUALITY 2 = TRUE****"
+	print isEqual(originalHandDeck, copy.deepcopy(originalHandDeck))
+	print "****TEST EQUALITY 3 = FALSE****"
+	print isEqual(originalHandDeck, None)
+	print "****TEST EQUALITY 4 = FALSE****"
+	fake2 = copy.deepcopy(fake)
+	print isEqual(originalHandDeck, fake2)
+	print "****TEST EQUALITY 5 = FALSE****"
+	fake3 = copy.deepcopy(fake)
+	print isEqual(originalHandDeck, moveToTop(fake3, Deck(numCards))[0])
+	print "****TEST EQUALITY 6 = FALSE****"
+	print isEqual(originalHandDeck, moveToTop(fake3, Deck(numCards))[0])
+	print "fake = ", fake3
+
+
+
+
+
+
+
+
+
+
 
