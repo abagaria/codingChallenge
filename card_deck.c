@@ -217,5 +217,9 @@ int main(int argc, char *argv[]) {
 	printf("Final card stack = ");
 	print(handdeck);
 	printf("Number of rounds played = %d\n", num_rounds);
+
+	// free all the space in the heap used by the program
+	free(handdeck);
+	free(tabledeck);
 	return 1;
 }
