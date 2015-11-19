@@ -175,13 +175,19 @@ void print_card(card_t *card) {
 	return;
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
 
-	int num_cards = 10;
+	// exit the program if the user didn't give an input arg for num cards
+	if (argc != 2) {
+		printf("Enter 1 argument to initialize the number of cards in deck\n");
+		exit(1);
+	}
+
+	char *num = argv[1];
+	int num_cards = atoi(num);
 	
 	// make new deck and print it
 	deck_t* handdeck = make_deck(num_cards);
-	print(handdeck);
 
 	// initialize empty table deck
 	deck_t *tabledeck = (deck_t *)malloc(sizeof(deck_t));
@@ -193,8 +199,7 @@ int main(void) {
 	int num_rounds = 0;
 	while (1) {
 		play_round(handdeck, tabledeck);
-		printf("table deck = ");
-		print(tabledeck);
+
 		// hand deck will get table deck as hand deck should be null after 
 		// a round has been played
 		handdeck->top = tabledeck->top;
@@ -209,8 +214,8 @@ int main(void) {
 			break;
 		}
 	}
+	printf("Final card stack = ");
+	print(handdeck);
 	printf("Number of rounds played = %d\n", num_rounds);
-
-
 	return 1;
 }
