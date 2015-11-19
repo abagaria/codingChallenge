@@ -6,8 +6,8 @@
 */
 struct card {
 	int identity;				// identity of the card
-	struct card_t *next;		// pointer to the card below self
-};
+	struct card *next;			// pointer to the card below self
+};	
 
 /*
 * Simple data structure representing a deck of cards. It is a stack which can
@@ -24,10 +24,10 @@ typedef struct card card_t;
 typedef struct deck deck_t;
 
 /* function prototypes for card game */
-deck_t make_deck(int num_cards); // return a deck with unique identities
+deck_t* make_deck(int num_cards); // return a deck with unique identities
 void move_to_top(deck_t *handdeck, deck_t *tabledeck); // change the decks given
 void move_to_bottom(deck_t *handdeck); // change the hand deck
-int is_equal(deck_t original_deck, deck_t tabledeck); // rebuilt original deck?
+int is_equal(deck_t *tabledeck); // rebuilt original deck?
 void play_round(deck_t *handdeck, deck_t *tabledeck); // play a 'round'
-void print(deck_t deck); // print function for a deck_t object / structure
-void print_card(card_t card); // print function for a card
+void print(deck_t *deck); // print function for a deck_t object / structure
+void print_card(card_t *card); // print function for a card
