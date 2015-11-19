@@ -8,10 +8,10 @@ CFLAGS = -Wall
 all: card_deck
 
 card_deck: card_deck.o
-	$(CC) $(CFLAGS) -lpthread -o card_deck card_deck.o
+	$(CC) $(CFLAGS) -o card_deck card_deck.o
 
 card_deck.o: card_deck.h card_deck.c
-	$(CC) $(CFLAGS) -c card_deck.c
+	$(CC) $(CFLAGS) -c -O -g card_deck.c
 
 clean:
 	rm card_deck.o
