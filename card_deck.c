@@ -1,3 +1,13 @@
+/*
+*   Author: Akhil Bagaria
+*   Email: abagaria@hmc.edu
+*   Date: Nov 18th, 2015
+*   Description: C file implementing a data structure for card decks
+*   answering the question of how long it takes to restore a deck to its 
+*   original configuration.
+*/
+
+
 #include "card_deck.h"
 #include <stdlib.h>
 
@@ -134,6 +144,10 @@ int is_equal(deck_t *tabledeck) {
     return 1;
 }
 
+/*
+*  A round is defined as playing to top and then to bottom until there are no
+*  more cards in the hand deck.
+*/
 void play_round(deck_t *handdeck, deck_t *tabledeck) {
     while (handdeck->top != NULL) {
         move_to_top(handdeck, tabledeck);
